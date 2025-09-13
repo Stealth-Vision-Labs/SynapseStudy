@@ -14,6 +14,7 @@
   - `make lint` — format and lint (e.g., `black`, `ruff`, `prettier`, `eslint`).
   - `make run` — start the app or demo entrypoint.
 - If no `Makefile` exists, run the underlying commands directly.
+ - CI: GitHub Actions runs lint/build/tests on Node 18/20/22 for Ubuntu, macOS, and Windows.
 
 ## Coding Style & Naming Conventions
 - Python: 4‑space indent, `black` for formatting, `ruff` for linting. Modules `snake_case.py`, classes `PascalCase`, constants `UPPER_SNAKE`.
