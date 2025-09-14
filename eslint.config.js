@@ -31,8 +31,9 @@ export default [
       // General import hygiene
       'import/order': ['warn', { 'newlines-between': 'always' }],
       'import/no-unresolved': 'off',
-      // TS recommendations (type-agnostic to avoid requiring a project)
-      ...tseslint.configs.recommended.rules,
+      // Basic TS rules (keep light; enable more later)
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/consistent-type-imports': 'warn',
     },
   },
   {
@@ -49,4 +50,3 @@ export default [
     },
   },
 ];
-
