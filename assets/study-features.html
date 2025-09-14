@@ -12,6 +12,40 @@
       <a class="back-link" href="./index.html">← Back</a>
     </nav>
     <main class="content">
+      <section id="featuresSection" class="hidden" aria-hidden="true">
+        <h1>Study Features</h1>
+        <div class="features-form" id="featuresForm">
+          <div class="feature">
+            <label for="feature1">
+              <input type="checkbox" id="feature1" />
+              Recognize Patterns
+            </label>
+          </div>
+
+          <div class="feature">
+            <label for="feature2">
+              <input type="checkbox" id="feature2" />
+              Step by step solving
+            </label>
+          </div>
+
+          <div class="feature">
+            <label for="feature3">
+              <input type="checkbox" id="feature3" />
+              Flash cards
+            </label>
+          </div>
+
+          <div class="feature">
+            <label for="feature4">
+              <input type="checkbox" id="feature4" />
+              Practice prompts or problems
+            </label>
+          </div>
+      </div>
+      </section>
+
+      <!-- Search bar at the bottom; triggers the features to pop up above -->
       <form id="searchForm" class="search-bar" role="search" aria-label="Study search">
         <input
           id="searchInput"
@@ -24,76 +58,6 @@
         />
         <button class="search-btn" type="submit">Search</button>
       </form>
-
-      <section id="featuresSection" class="hidden" aria-hidden="true">
-        <h1>Study Features</h1>
-        <form class="features-form" id="featuresForm">
-          <div class="feature">
-            <label for="feature1">
-              <input type="checkbox" id="feature1" />
-              Recognize Patterns
-            </label>
-          <input
-            type="text"
-            id="input1"
-            class="feature-input"
-            placeholder="Add notes or details"
-            disabled
-            aria-label="Recognize Patterns notes"
-          />
-        </div>
-
-        <div class="feature">
-          <label for="feature2">
-            <input type="checkbox" id="feature2" />
-            Step by step solving
-          </label>
-          <input
-            type="text"
-            id="input2"
-            class="feature-input"
-            placeholder="Add notes or steps"
-            disabled
-            aria-label="Step by step solving notes"
-          />
-        </div>
-
-        <div class="feature">
-          <label for="feature3">
-            <input type="checkbox" id="feature3" />
-            Flash cards
-          </label>
-          <input
-            type="text"
-            id="input3"
-            class="feature-input"
-            placeholder="Add terms or ideas"
-            disabled
-            aria-label="Flash cards notes"
-          />
-        </div>
-
-        <div class="feature">
-          <label for="feature4">
-            <input type="checkbox" id="feature4" />
-            Practice prompts or problems
-          </label>
-          <input
-            type="text"
-            id="input4"
-            class="feature-input"
-            placeholder="Add topics to practice"
-            disabled
-            aria-label="Practice prompts or problems notes"
-          />
-        </div>
-
-        <div class="actions">
-          <button type="submit" class="submit-btn">Save</button>
-          <span id="saveStatus" class="save-status" aria-live="polite"></span>
-        </div>
-      </form>
-      </section>
     </main>
 
     <script>
@@ -126,55 +90,20 @@
           });
         }
 
-        const features = [
-          { box: 'feature1', input: 'input1' },
-          { box: 'feature2', input: 'input2' },
-          { box: 'feature3', input: 'input3' },
-          { box: 'feature4', input: 'input4' },
-        ];
+        const features = ['feature1', 'feature2', 'feature3', 'feature4'];
 
-        const statusEl = document.getElementById('saveStatus');
-
-        function setStatus(msg) {
-          if (!statusEl) return;
-          statusEl.textContent = msg;
-          setTimeout(() => (statusEl.textContent = ''), 1500);
-        }
-
-        // Restore state from localStorage
-        features.forEach(({ box, input }) => {
-          const boxEl = document.getElementById(box);
-          const inputEl = document.getElementById(input);
-          if (!(boxEl instanceof HTMLInputElement) || !(inputEl instanceof HTMLInputElement)) return;
-
-          const savedChecked = localStorage.getItem(box);
-          const savedValue = localStorage.getItem(input);
-
-          if (savedChecked !== null) {
-            boxEl.checked = savedChecked === '1';
-          }
-          if (savedValue !== null) {
-            inputEl.value = savedValue;
-          }
-
-          inputEl.disabled = !boxEl.checked;
-
+        // Restore checkbox state and persist changes
+        features.forEach((id) => {
+          const boxEl = document.getElementById(id);
+          if (!(boxEl instanceof HTMLInputElement)) return;
+          const savedChecked = localStorage.getItem(id);
+          if (savedChecked !== null) boxEl.checked = savedChecked === '1';
           boxEl.addEventListener('change', () => {
-            inputEl.disabled = !boxEl.checked;
-            localStorage.setItem(box, boxEl.checked ? '1' : '0');
-          });
-
-          inputEl.addEventListener('input', () => {
-            localStorage.setItem(input, inputEl.value);
+            localStorage.setItem(id, boxEl.checked ? '1' : '0');
           });
         });
 
-        // Handle form save
-        const form = document.getElementById('featuresForm');
-        form && form.addEventListener('submit', (e) => {
-          e.preventDefault();
-          setStatus('Saved');
-        });
+        // No save button; state persists automatically via localStorage
       })();
     </script>
   </body>

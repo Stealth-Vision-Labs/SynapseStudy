@@ -11,13 +11,12 @@
       <div class="brand">SynapseStudy</div>
       <div class="top-actions">
         <a class="subject-box" href="./subjects/language.html" aria-label="Language subject">Language</a>
-        <a id="studyFeaturesLink" class="subject-box hidden" href="./study-features.html" aria-label="Study Features" aria-hidden="true">Study Features</a>
       </div>
     </nav>
 
     <main class="content">
-      <h1>Welcome</h1>
-      <p>Search a topic to unlock Study Features.</p>
+      <h1>Welcome to Synapse Study</h1>
+      <p>Into the search bar below input your problem, prompt, text, screenshot, or photo you are trying to solve or need help studying.</p>
 
       <form id="homeSearchForm" class="search-bar" role="search" aria-label="Home search">
         <input
@@ -35,22 +34,12 @@
 
     <script>
       (function () {
-        const link = document.getElementById('studyFeaturesLink');
         const form = document.getElementById('homeSearchForm');
         const input = document.getElementById('homeSearchInput');
 
-        function revealLink() {
-          if (!link) return;
-          link.classList.remove('hidden');
-          link.setAttribute('aria-hidden', 'false');
-        }
-
-        // Restore prior query and reveal if present
+        // Restore prior query for convenience
         const prior = localStorage.getItem('study_search_query');
-        if (prior) {
-          revealLink();
-          if (input instanceof HTMLInputElement) input.value = prior;
-        }
+        if (prior && input instanceof HTMLInputElement) input.value = prior;
 
         if (form && input instanceof HTMLInputElement) {
           form.addEventListener('submit', (e) => {
@@ -58,7 +47,8 @@
             const q = input.value.trim();
             if (!q) return;
             localStorage.setItem('study_search_query', q);
-            revealLink();
+            // Navigate directly to Study Features (no button)
+            window.location.href = './study-features.html';
           });
         }
       })();
