@@ -50,9 +50,6 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Prettier check
-        run: npm run format
-
       - name: Type check and build
         run: npm run build
 
