@@ -9,59 +9,14 @@
   <body>
     <nav class="topbar">
       <div class="brand">SynapseStudy</div>
-      <div class="top-actions">
-        <a class="subject-box" href="./subjects/language.html" aria-label="Language subject">Language</a>
-        <a id="studyFeaturesLink" class="subject-box hidden" href="./study-features.html" aria-label="Study Features" aria-hidden="true">Study Features</a>
-      </div>
+      <a class="subject-box" href="./subjects/language.html" aria-label="Language subject">Language</a>
     </nav>
 
     <main class="content">
       <h1>Welcome</h1>
-      <p>Search a topic to unlock Study Features.</p>
-
-      <form id="homeSearchForm" class="search-bar" role="search" aria-label="Home search">
-        <input
-          id="homeSearchInput"
-          class="search-input"
-          type="search"
-          placeholder="Search a topic..."
-          autocomplete="off"
-          aria-label="Search topic"
-          required
-        />
-        <button class="search-btn" type="submit">Search</button>
-      </form>
+      <p>Select a subject from the menu to navigate.</p>
     </main>
 
-    <script>
-      (function () {
-        const link = document.getElementById('studyFeaturesLink');
-        const form = document.getElementById('homeSearchForm');
-        const input = document.getElementById('homeSearchInput');
-
-        function revealLink() {
-          if (!link) return;
-          link.classList.remove('hidden');
-          link.setAttribute('aria-hidden', 'false');
-        }
-
-        // Restore prior query and reveal if present
-        const prior = localStorage.getItem('study_search_query');
-        if (prior) {
-          revealLink();
-          if (input instanceof HTMLInputElement) input.value = prior;
-        }
-
-        if (form && input instanceof HTMLInputElement) {
-          form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const q = input.value.trim();
-            if (!q) return;
-            localStorage.setItem('study_search_query', q);
-            revealLink();
-          });
-        }
-      })();
-    </script>
+    <!-- No script needed: single subject link -->
   </body>
 </html>
