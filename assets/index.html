@@ -9,14 +9,51 @@
   <body>
     <nav class="topbar">
       <div class="brand">SynapseStudy</div>
-      <a class="subject-box" href="./subjects/language.html" aria-label="Language subject">Language</a>
+
+      <div class="top-actions">
+        <a class="subject-box" href="./subjects/language.html" aria-label="Language subject">Language</a>
+      </div>
     </nav>
 
     <main class="content">
-      <h1>Welcome</h1>
-      <p>Select a subject from the menu to navigate.</p>
+      <h1>Welcome to Synapse Study</h1>
+      <p>Into the search bar below input your problem, prompt, text, screenshot, or photo you are trying to solve or need help studying.</p>
+
+      <form id="homeSearchForm" class="search-bar" role="search" aria-label="Home search">
+        <input
+          id="homeSearchInput"
+          class="search-input"
+          type="search"
+          placeholder="Search a topic..."
+          autocomplete="off"
+          aria-label="Search topic"
+          required
+        />
+        <button class="search-btn" type="submit">Search</button>
+      </form>
     </main>
 
-    <!-- No script needed: single subject link -->
+    <script>
+      (function () {
+        const form = document.getElementById('homeSearchForm');
+        const input = document.getElementById('homeSearchInput');
+
+        // Restore prior query for convenience
+        const prior = localStorage.getItem('study_search_query');
+        if (prior && input instanceof HTMLInputElement) input.value = prior;
+
+        if (form && input instanceof HTMLInputElement) {
+          form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const q = input.value.trim();
+            if (!q) return;
+            localStorage.setItem('study_search_query', q);
+            // Navigate directly to Study Features (no button)
+            window.location.href = './study-features.html';
+          });
+        }
+      })();
+    </script>
+
   </body>
 </html>
