@@ -41,6 +41,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 10;
+  transition: filter 160ms ease;
 }
 
 .brand {
@@ -69,7 +70,7 @@ body {
   max-width: 840px;
   margin: 32px auto;
   padding: 0 16px;
-  padding-bottom: 96px; /* space for bottom bar */
+  transition: filter 160ms ease;
 }
 
 .back-link { color: var(--accent); text-decoration: none; }
@@ -128,4 +129,50 @@ body {
   height: 1px; width: 1px;
   overflow: hidden; clip: rect(1px, 1px, 1px, 1px);
   white-space: nowrap; border: 0; padding: 0; margin: -1px;
+}
+
+/* Modal overlay for solution */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: grid;
+  place-items: center;
+  z-index: 1000;
+}
+.overlay.hidden { display: none; }
+
+.dialog {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: calc(100% - 32px);
+  max-width: 720px;
+  max-height: 80vh;
+  overflow: auto;
+  padding: 16px 16px 8px;
+  outline: none;
+}
+
+.close-btn {
+  position: sticky;
+  top: 8px;
+  float: right;
+  border: 1px solid var(--border);
+  background: #0f1520;
+  color: var(--text);
+  border-radius: 8px;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+.close-btn:hover { border-color: var(--accent); }
+
+/* Blur background while modal is open */
+body.modal-open .topbar,
+body.modal-open .content {
+  filter: blur(4px) brightness(0.9);
+}
+body.modal-open {
+  overflow: hidden; /* prevent background scroll while modal open */
 }

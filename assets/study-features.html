@@ -43,6 +43,8 @@
             </label>
           </div>
       </div>
+
+      <!-- Solution is now shown in a separate modal overlay when triggered -->
       </section>
 
       <!-- Search bar at the bottom; triggers the features to pop up above -->
@@ -60,17 +62,58 @@
       </form>
     </main>
 
+    <!-- Modal overlay for the step-by-step solution -->
+    <div id="solutionLayer" class="overlay hidden" aria-hidden="true">
+      <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="solutionTitle">
+        <button id="solutionClose" class="close-btn" aria-label="Close">×</button>
+        <h2 id="solutionTitle">Step-by-step Solution</h2>
+        <p>Factoring 15x² + 4x − 4 using the divide–slide method:</p>
+        <ol>
+          <li><strong>Set up:</strong> a = 15, b = 4, c = −4.</li>
+          <li><strong>Multiply a·c:</strong> 15 · (−4) = −60.</li>
+          <li><strong>Factor x² + 4x − 60:</strong> numbers 10 and −6 → (x + 10)(x − 6).</li>
+          <li><strong>Divide by a:</strong> (x + 10/15)(x − 6/15).</li>
+          <li><strong>Simplify fractions:</strong> (x + 2/3)(x − 2/5).</li>
+          <li><strong>Slide denominators up:</strong> (3x + 2)(5x − 2).</li>
+          <li><strong>Final:</strong> 15x² + 4x − 4 = (3x + 2)(5x − 2).</li>
+        </ol>
+        <p><em>Check:</em> (3x + 2)(5x − 2) = 15x² − 6x + 10x − 4 = 15x² + 4x − 4.</p>
+      </div>
+    </div>
+
     <script>
       (function () {
         // Toggle features visibility based on search
         const searchForm = document.getElementById('searchForm');
         const searchInput = document.getElementById('searchInput');
         const featuresSection = document.getElementById('featuresSection');
+        const feature2 = document.getElementById('feature2');
+        const solutionLayer = document.getElementById('solutionLayer');
+        const solutionClose = document.getElementById('solutionClose');
+        const dialog = solutionLayer ? solutionLayer.querySelector('.dialog') : null;
+        let revealedOnce = false;
 
         function revealFeatures() {
           if (!featuresSection) return;
           featuresSection.classList.remove('hidden');
           featuresSection.setAttribute('aria-hidden', 'false');
+          revealedOnce = true;
+        }
+
+        function openOverlay() {
+          if (!solutionLayer) return;
+          solutionLayer.classList.remove('hidden');
+          solutionLayer.setAttribute('aria-hidden', 'false');
+          // Focus the dialog for accessibility
+          if (dialog && dialog instanceof HTMLElement) dialog.focus();
+          document.body.classList.add('modal-open');
+        }
+
+        function closeOverlay() {
+          if (!solutionLayer) return;
+          solutionLayer.classList.add('hidden');
+          solutionLayer.setAttribute('aria-hidden', 'true');
+          document.body.classList.remove('modal-open');
         }
 
         // Restore reveal state if user searched before
@@ -86,7 +129,14 @@
             const q = searchInput.value.trim();
             if (!q) return;
             localStorage.setItem('study_search_query', q);
-            revealFeatures();
+            // First submit reveals features only
+            if (!revealedOnce) {
+              revealFeatures();
+              return;
+            }
+            // Subsequent submit: only show overlay if step-by-step is checked
+            const stepChecked = feature2 instanceof HTMLInputElement ? feature2.checked : false;
+            if (stepChecked) openOverlay();
           });
         }
 
@@ -101,6 +151,19 @@
           boxEl.addEventListener('change', () => {
             localStorage.setItem(id, boxEl.checked ? '1' : '0');
           });
+        });
+
+        // Overlay close interactions
+        if (solutionClose) {
+          solutionClose.addEventListener('click', () => closeOverlay());
+        }
+        if (solutionLayer) {
+          solutionLayer.addEventListener('click', (ev) => {
+            if (ev.target === solutionLayer) closeOverlay();
+          });
+        }
+        document.addEventListener('keydown', (ev) => {
+          if (ev.key === 'Escape') closeOverlay();
         });
 
         // No save button; state persists automatically via localStorage
