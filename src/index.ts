@@ -20,6 +20,11 @@ export function main(): void {
     res.sendFile(path.join(__dirname, `../assets/subjects/${subject}.html`));
   });
 
+  // Study Features page
+  app.get('/study-features', (_req, res) => {
+    res.sendFile(path.join(__dirname, '../assets/study-features.html'));
+  });
+
   app.listen(port, () => {
     console.log(`SynapseStudy server running at http://localhost:${port}`);
   });
