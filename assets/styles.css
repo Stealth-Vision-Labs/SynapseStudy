@@ -49,6 +49,13 @@ body {
 }
 
 
+/* Right-side action links container */
+.top-actions {
+  display: flex;
+  gap: 8px;
+}
+
+
 /* Subject box link placed on the right side of the topbar */
 .subject-box {
   display: inline-block;
@@ -76,3 +83,82 @@ body {
 .back-link { color: var(--accent); text-decoration: none; }
 .back-link:hover { text-decoration: underline; }
 
+/* Utilities */
+.hidden { display: none; }
+
+/* Search bar */
+.search-bar {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0 16px;
+}
+.search-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #10151c;
+  color: var(--text);
+}
+.search-btn {
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #0f1520;
+  color: var(--text);
+  cursor: pointer;
+}
+.search-btn:hover {
+  border-color: var(--accent);
+}
+
+/* Study Features form styles */
+.features-form {
+  display: grid;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.feature {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.feature-input {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #10151c;
+  color: var(--text);
+}
+
+.feature-input:disabled {
+  opacity: 0.6;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.submit-btn {
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #0f1520;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  border-color: var(--accent);
+}
+
+.save-status {
+  color: var(--muted);
+}

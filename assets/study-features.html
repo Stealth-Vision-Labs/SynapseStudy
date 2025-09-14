@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Study Features — SynapseStudy</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <nav class="topbar">
+      <div class="brand">SynapseStudy</div>
+      <a class="back-link" href="./index.html">← Back</a>
+    </nav>
+    <main class="content">
+      <form id="searchForm" class="search-bar" role="search" aria-label="Study search">
+        <input
+          id="searchInput"
+          class="search-input"
+          type="search"
+          placeholder="Search a topic to enable features..."
+          autocomplete="off"
+          aria-label="Search topic"
+          required
+        />
+        <button class="search-btn" type="submit">Search</button>
+      </form>
+
+      <section id="featuresSection" class="hidden" aria-hidden="true">
+        <h1>Study Features</h1>
+        <form class="features-form" id="featuresForm">
+          <div class="feature">
+            <label for="feature1">
+              <input type="checkbox" id="feature1" />
+              Recognize Patterns
+            </label>
+          <input
+            type="text"
+            id="input1"
+            class="feature-input"
+            placeholder="Add notes or details"
+            disabled
+            aria-label="Recognize Patterns notes"
+          />
+        </div>
+
+        <div class="feature">
+          <label for="feature2">
+            <input type="checkbox" id="feature2" />
+            Step by step solving
+          </label>
+          <input
+            type="text"
+            id="input2"
+            class="feature-input"
+            placeholder="Add notes or steps"
+            disabled
+            aria-label="Step by step solving notes"
+          />
+        </div>
+
+        <div class="feature">
+          <label for="feature3">
+            <input type="checkbox" id="feature3" />
+            Flash cards
+          </label>
+          <input
+            type="text"
+            id="input3"
+            class="feature-input"
+            placeholder="Add terms or ideas"
+            disabled
+            aria-label="Flash cards notes"
+          />
+        </div>
+
+        <div class="feature">
+          <label for="feature4">
+            <input type="checkbox" id="feature4" />
+            Practice prompts or problems
+          </label>
+          <input
+            type="text"
+            id="input4"
+            class="feature-input"
+            placeholder="Add topics to practice"
+            disabled
+            aria-label="Practice prompts or problems notes"
+          />
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="submit-btn">Save</button>
+          <span id="saveStatus" class="save-status" aria-live="polite"></span>
+        </div>
+      </form>
+      </section>
+    </main>
+
+    <script>
+      (function () {
+        // Toggle features visibility based on search
+        const searchForm = document.getElementById('searchForm');
+        const searchInput = document.getElementById('searchInput');
+        const featuresSection = document.getElementById('featuresSection');
+
+        function revealFeatures() {
+          if (!featuresSection) return;
+          featuresSection.classList.remove('hidden');
+          featuresSection.setAttribute('aria-hidden', 'false');
+        }
+
+        // Restore reveal state if user searched before
+        const priorQuery = localStorage.getItem('study_search_query');
+        if (priorQuery && searchInput instanceof HTMLInputElement) {
+          searchInput.value = priorQuery;
+          revealFeatures();
+        }
+
+        if (searchForm && searchInput instanceof HTMLInputElement) {
+          searchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const q = searchInput.value.trim();
+            if (!q) return;
+            localStorage.setItem('study_search_query', q);
+            revealFeatures();
+          });
+        }
+
+        const features = [
+          { box: 'feature1', input: 'input1' },
+          { box: 'feature2', input: 'input2' },
+          { box: 'feature3', input: 'input3' },
+          { box: 'feature4', input: 'input4' },
+        ];
+
+        const statusEl = document.getElementById('saveStatus');
+
+        function setStatus(msg) {
+          if (!statusEl) return;
+          statusEl.textContent = msg;
+          setTimeout(() => (statusEl.textContent = ''), 1500);
+        }
+
+        // Restore state from localStorage
+        features.forEach(({ box, input }) => {
+          const boxEl = document.getElementById(box);
+          const inputEl = document.getElementById(input);
+          if (!(boxEl instanceof HTMLInputElement) || !(inputEl instanceof HTMLInputElement)) return;
+
+          const savedChecked = localStorage.getItem(box);
+          const savedValue = localStorage.getItem(input);
+
+          if (savedChecked !== null) {
+            boxEl.checked = savedChecked === '1';
+          }
+          if (savedValue !== null) {
+            inputEl.value = savedValue;
+          }
+
+          inputEl.disabled = !boxEl.checked;
+
+          boxEl.addEventListener('change', () => {
+            inputEl.disabled = !boxEl.checked;
+            localStorage.setItem(box, boxEl.checked ? '1' : '0');
+          });
+
+          inputEl.addEventListener('input', () => {
+            localStorage.setItem(input, inputEl.value);
+          });
+        });
+
+        // Handle form save
+        const form = document.getElementById('featuresForm');
+        form && form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          setStatus('Saved');
+        });
+      })();
+    </script>
+  </body>
+  </html>
