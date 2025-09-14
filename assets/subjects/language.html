@@ -14,7 +14,20 @@
     <main class="content">
       <h1>Language</h1>
       <p>Placeholder page for Language. Content to be added later.</p>
+      <div id="queryOutput" class="query-output" aria-live="polite"></div>
     </main>
+    <form id="languageQuery" class="bottom-bar" autocomplete="off">
+      <label for="query" class="visually-hidden">Ask a language question</label>
+      <input
+        id="query"
+        name="query"
+        class="query-input"
+        type="text"
+        required
+        placeholder='Example question: Identify the case and declension of the noun in this sentence, "Ancillae bibant vinum".'
+      />
+      <button class="query-submit" type="submit">Ask</button>
+    </form>
+    <script src="../language.js" defer></script>
   </body>
   </html>
-
