@@ -67,17 +67,7 @@
       <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="solutionTitle">
         <button id="solutionClose" class="close-btn" aria-label="Close">×</button>
         <h2 id="solutionTitle">Step-by-step Solution</h2>
-        <p>Factoring 15x² + 4x − 4 using the divide–slide method:</p>
-        <ol>
-          <li><strong>Set up:</strong> a = 15, b = 4, c = −4.</li>
-          <li><strong>Multiply a·c:</strong> 15 · (−4) = −60.</li>
-          <li><strong>Factor x² + 4x − 60:</strong> numbers 10 and −6 → (x + 10)(x − 6).</li>
-          <li><strong>Divide by a:</strong> (x + 10/15)(x − 6/15).</li>
-          <li><strong>Simplify fractions:</strong> (x + 2/3)(x − 2/5).</li>
-          <li><strong>Slide denominators up:</strong> (3x + 2)(5x − 2).</li>
-          <li><strong>Final:</strong> 15x² + 4x − 4 = (3x + 2)(5x − 2).</li>
-        </ol>
-        <p><em>Check:</em> (3x + 2)(5x − 2) = 15x² − 6x + 10x − 4 = 15x² + 4x − 4.</p>
+        <div id="solutionContent" class="solution-content"></div>
       </div>
     </div>
 
@@ -134,9 +124,47 @@
               revealFeatures();
               return;
             }
-            // Subsequent submit: only show overlay if step-by-step is checked
+            // Subsequent submit: only show overlay and fetch if step-by-step is checked
             const stepChecked = feature2 instanceof HTMLInputElement ? feature2.checked : false;
-            if (stepChecked) openOverlay();
+            if (stepChecked) {
+              openOverlay();
+              const contentEl = document.getElementById('solutionContent');
+              if (contentEl) {
+                contentEl.textContent = `Generating a step-by-step solution for: "${q}" …`;
+              }
+              // Call backend to generate the solution using the desired template
+              fetch('/api/step-by-step', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query: q })
+              })
+                .then(async (r) => {
+                  if (!r.ok) throw new Error(`Request failed: ${r.status}`);
+                  return r.json();
+                })
+                .then((data) => {
+                  const el = document.getElementById('solutionContent');
+                  if (!el) return;
+                  const txt = typeof data?.content === 'string' ? data.content : '';
+                  if (!txt) {
+                    el.textContent = 'No response received. Try again.';
+                    return;
+                  }
+                  // Render as simple paragraphs; preserve newlines
+                  el.innerHTML = '';
+                  txt.split('\n').forEach((line) => {
+                    const p = document.createElement('p');
+                    p.textContent = line;
+                    el.appendChild(p);
+                  });
+                })
+                .catch((err) => {
+                  const el = document.getElementById('solutionContent');
+                  if (el) {
+                    el.textContent = `Error generating solution: ${err instanceof Error ? err.message : String(err)}`;
+                  }
+                });
+            }
           });
         }
 
