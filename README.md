@@ -16,4 +16,3 @@ Pages are simple HTML so you can iterate on subject content later under `assets/
 - `make build` — compile TypeScript to `dist/`
 - `make test` — run tests
 - `make run` — run Node entry (`src/index.ts`) — unrelated to the static HTML demo
-

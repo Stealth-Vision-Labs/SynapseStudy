@@ -16,7 +16,8 @@
   toggle.addEventListener('click', (e) => {
     e.stopPropagation();
     const isOpen = menu.classList.contains('open');
-    if (isOpen) closeMenu(); else openMenu();
+    if (isOpen) closeMenu();
+    else openMenu();
   });
 
   // Close when clicking outside
@@ -25,4 +26,3 @@
   // Keep menu open while interacting inside
   menu.addEventListener('click', (e) => e.stopPropagation());
 })();
-
