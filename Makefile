@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: setup build test lint format format:write run clean
+.PHONY: setup build test lint format format-write run clean
 
 setup:
 	@set -e; \
@@ -28,7 +28,7 @@ format:
 	@echo "[format] prettier --check"; \
 	npx --yes prettier --check . || echo "Prettier not installed yet; run make setup"
 
-format\:write:
+format-write:
 	@echo "[format] prettier --write"; \
 	npx --yes prettier --write . || echo "Prettier not installed yet; run make setup"
 

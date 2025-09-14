@@ -4,8 +4,7 @@ export default defineConfig({
   test: {
     include: ['tests/**/*.test.ts'],
     coverage: {
-      enabled: false
-    }
-  }
+      enabled: false,
+    },
+  },
 });
-

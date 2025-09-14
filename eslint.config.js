@@ -32,7 +32,10 @@ export default [
       'import/order': ['warn', { 'newlines-between': 'always' }],
       'import/no-unresolved': 'off',
       // Basic TS rules (keep light; enable more later)
-      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { argsIgnorePattern: '^_' },
+      ],
       '@typescript-eslint/consistent-type-imports': 'warn',
     },
   },
